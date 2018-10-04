@@ -23,10 +23,6 @@ class ReactSSRView(View):
     extra_context = None
     extra_request_headers = None
 
-    def get_user_serializer_class(self):
-        if self.user_serializer_class is None:
-            self.user_serializer_class = import_string(self.user_serializer)
-        return self.user_serializer_class
 
     def get_request_headers(self, request):
         request_headers = {
@@ -133,14 +129,20 @@ class ReactSSRView(View):
     def get_default_auth_state(self):
         return self.get_default_state("auth")
 
+    def get_user_serializer_class(self):
+        if self.user_serializer_class is None:
+            self.user_serializer_class = import_string(self.user_serializer)
+        return self.user_serializer_class
+
     def get_user_state(self, request):
         user_serializer_class = self.get_user_serializer_class()
         try:
             serializer = user_serializer_class(request.user)
+            state = serializer.data
         except AssertionError:
             serializer = user_serializer_class(
                 request.user, context={"request": request})
-        state = serializer.data
+            state = serializer.data
         return state
 
     def build_auth_state(self, request):
