@@ -1,0 +1,2 @@
+class RenderServerError(Exception):
+    pass
