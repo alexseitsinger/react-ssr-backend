@@ -13,42 +13,27 @@ from .utils import read_json
 
 
 class ReactSSRView(View):
-    template_name = "index_ssr.html"
+    template_name = None
     render_url = "http://127.0.0.1:3000/render"
     render_timeout = 5.0
     secret_key = "THIS_IS_A_SECRET_KEY"
     user_serializer = None
     user_serializer_class = None
-    reducers_dir = "./frontend/src/reducers"
-    extra_context = None
-    extra_render_headers = None
+    reducers_dir = None
 
     def get_render_headers(self, request):
         render_headers = {
             "content_type": "application/json"
         }
+        # Add the user-agent to the headers so render can see the browser used by the client.
         user_agent = request.META.get("HTTP_USER_AGENT", None)
         if user_agent is not None:
             render_headers.update({
                 "user-agent": user_agent
             })
-        extra_render_headers = self.get_extra_render_headers(request)
-        render_headers.update(extra_render_headers)
         return render_headers
 
-    def get_extra_render_headers(self, request):
-        extra_render_headers = self.extra_render_headers
-        if extra_render_headers is None:
-            extra_render_headers = {}
-        return extra_render_headers
-
-    def get_extra_context(self, request, *args, **kwargs):
-        extra_context = self.extra_context
-        if extra_context is None:
-            extra_context = {}
-        return extra_context
-
-    def get_context(self, request, response, *args, **kwargs):
+    def get_context(self, response):
         error = response.get("error", None)
         if error is not None:
             message = error.get("message", None)
@@ -62,27 +47,20 @@ class ReactSSRView(View):
                 )
             raise RenderServerError(error)
 
+        # React
         html = response.get("html", None)
         if html is None:
             raise RenderServerError("Render server failed to return html. Returned: {}".format(response))
 
+        # React Redux
         state = response.get("state", None)
         if state is None:
             raise RenderServerError("Render server failed to return state. Returned: {}".format(response))
 
-        script = response.get("script", None)
-        if script is None:
-            raise RenderServerError("Render server failed to return loadable script. Returned: {}".format(response))
-
         context = {
             "html": html,
             "state": json.dumps(state),
-            "script": script,
         }
-
-        extra_context = self.get_extra_context(request, *args, **kwargs)
-
-        context.update(extra_context)
 
         return context
 
@@ -176,6 +154,6 @@ class ReactSSRView(View):
         render_payload = self.get_render_payload(request, initial_state)
         render_headers = self.get_render_headers(request)
         response = self.render(render_payload, render_headers)
-        context = self.get_context(request, response, *args, **kwargs)
+        context = self.get_context(response)
         return render(request, self.template_name, context)
 
