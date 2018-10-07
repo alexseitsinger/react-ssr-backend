@@ -10,16 +10,42 @@ import requests
 import json
 import os
 from .utils import read_json
+from .settings import (
+    TEMPLATE_NAME,
+    RENDER_URL,
+    RENDER_TIMEOUT,
+    SECRET_KEY,
+    USER_SERIALIZER,
+    REDUCERS_DIR,
+)
 
 
 class ReactSSRView(View):
     template_name = None
-    render_url = "http://127.0.0.1:3000/render"
-    render_timeout = 5.0
-    secret_key = "THIS_IS_A_SECRET_KEY"
+    render_url = None
+    render_timeout = None
+    secret_key = None
     user_serializer = None
     user_serializer_class = None
     reducers_dir = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initialize_settings()
+
+    def initialize_settings(self):
+        if self.template_name is None:
+            self.template_name = TEMPLATE_NAME
+        if self.render_url is None:
+            self.render_url = RENDER_URL
+        if self.render_timeout is None:
+            self.render_timeout = RENDER_TIMEOUT
+        if self.secret_key is None:
+            self.secret_key = SECRET_KEY
+        if self.user_serializer is None:
+            self.user_serializer = USER_SERIALIZER
+        if self.reducers_dir is None:
+            self.reducers_dir = REDUCERS_DIR
 
     def get_render_headers(self, request):
         render_headers = {
