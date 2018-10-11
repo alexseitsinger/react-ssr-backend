@@ -38,7 +38,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     #
     # Required
-    version="0.1.6",
+    version="0.1.7",
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:

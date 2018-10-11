@@ -1,14 +1,16 @@
+import requests
+import json
+import os
 from django.views.generic.base import View
 from django.utils.module_loading import import_string
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework_jwt.serializers import (
     jwt_payload_handler,
     jwt_encode_handler,
 )
 from .exceptions import RenderServerError
-import requests
-import json
-import os
 from .utils import read_json
 from .settings import (
     TEMPLATE_NAME,
@@ -174,6 +176,7 @@ class ReactSSRView(View):
     def get_page_state(self, request, *args, **kwargs):
         raise Exception("get_page_state() not implemented.")
 
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         page_state = self.get_page_state(request, *args, **kwargs)
         initial_state = self.get_initial_state(request, page_state)
