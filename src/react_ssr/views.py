@@ -30,6 +30,7 @@ class ReactSSRView(View):
     user_serializer = None
     user_serializer_class = None
     reducers_dir = None
+    status_code = 200
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -184,5 +185,10 @@ class ReactSSRView(View):
         render_headers = self.get_render_headers(request)
         response = self.render(render_payload, render_headers)
         context = self.get_context(response)
-        return render(request, self.template_name, context)
+        return render(
+            request,
+            self.template_name,
+            context,
+            status=self.status_code
+        )
 
