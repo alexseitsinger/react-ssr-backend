@@ -124,11 +124,13 @@ class ReactSSRView(View):
         return response.json()
 
     def get_render_payload(self, request, initial_state):
-        return {
+        ret = {
             "url": request.path_info,
             "initialState": initial_state,
-            "secretKey": self.secret_key,
         }
+        if self.secret_key is not None:
+            ret["secretKey"] = self.secret_key
+        return ret
 
     def get_default_state(self, reducer_name):
         reducer_dir = os.path.join(self.reducers_dir, reducer_name)
