@@ -1,24 +1,28 @@
-import requests
 import json
-import os
-from django.views.generic.base import View
-from django.utils.module_loading import import_string
+import requests
 from django.shortcuts import render
+from django.utils.module_loading import import_string
 from django.utils.decorators import method_decorator
+from django.views.generic.base import View
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework_jwt.serializers import (
-    jwt_payload_handler,
-    jwt_encode_handler,
+
+from .exceptions import (
+    RenderError,
+    GetContextError,
+    GetDefaultStateError,
 )
-from .exceptions import RenderServerError
-from .utils import read_json
 from .settings import (
     TEMPLATE_NAME,
     RENDER_URL,
     RENDER_TIMEOUT,
     SECRET_KEY,
     USER_SERIALIZER,
-    REDUCERS_DIR,
+    DEFAULT_STATE_URL,
+    DEFAULT_STATE_TIMEOUT,
+    USER_AGENT_HEADER_NAME,
+    AUTH_STATE_NAME,
+    AUTH_TOKENS_NAME,
+    AUTH_USER_NAME,
 )
 
 
@@ -29,8 +33,13 @@ class ReactSSRView(View):
     secret_key = None
     user_serializer = None
     user_serializer_class = None
-    reducers_dir = None
     status_code = 200
+    default_state_url = None
+    default_state_timeout = None
+    user_agent_header_name = None
+    auth_state_name = None
+    auth_tokens_name = None
+    auth_user_name = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,51 +56,56 @@ class ReactSSRView(View):
             self.secret_key = SECRET_KEY
         if self.user_serializer is None:
             self.user_serializer = USER_SERIALIZER
-        if self.reducers_dir is None:
-            self.reducers_dir = REDUCERS_DIR
+        if self.default_state_url is None:
+            self.default_state_url = DEFAULT_STATE_URL
+        if self.default_state_timeout is None:
+            self.default_state_timeout = DEFAULT_STATE_TIMEOUT
+        if self.user_agent_header_name is None:
+            self.user_agent_header_name = USER_AGENT_HEADER_NAME
+        if self.auth_state_name is None:
+            self.auth_state_name = AUTH_STATE_NAME
+        if self.auth_tokens_name is None:
+            self.auth_tokens_name = AUTH_TOKENS_NAME
+        if self.auth_user_name is None:
+            self.auth_user_name = AUTH_USER_NAME
 
     def get_render_headers(self, request):
-        render_headers = {
-            "content_type": "application/json"
-        }
-        # Add the user-agent to the headers so render can see the browser used by the client.
-        user_agent = request.META.get("HTTP_USER_AGENT", None)
+        headers = {"content_type": "application/json"}
+        user_agent = request.META.get(self.user_agent_header_name, None)
         if user_agent is not None:
-            render_headers.update({
-                "user-agent": user_agent
-            })
-        return render_headers
+            headers["user-agent"] = user_agent
+        return headers
 
     def get_context(self, response):
+        # If we got an error in node, raise en error in Django.
         error = response.get("error", None)
         if error is not None:
             message = error.get("message", None)
             stack = error.get("stack", None)
             if message is not None and stack is not None:
-                raise RenderServerError(
-                    "Message: {}\n\nStack trace: {}".format(
-                        message,
-                        stack,
-                    )
+                raise GetContextError(
+                    "Message: {}\n\nStack trace: {}".format(message, stack)
                 )
-            raise RenderServerError(error)
+            raise GetContextError(error)
 
         # React
         html = response.get("html", None)
         if html is None:
-            raise RenderServerError("Render server failed to return html. Returned: {}".format(response))
+            raise GetContextError(
+                "Failed to return html. Returned: {}".format(response)
+            )
 
-        # React Redux
+        # Redux
         state = response.get("state", None)
         if state is None:
-            raise RenderServerError("Render server failed to return state. Returned: {}".format(response))
+            raise GetContextError(
+                "Failed to return state. Returned: {}".format(response)
+            )
 
-        context = {
+        return {
             "html": html,
             "state": json.dumps(state),
         }
-
-        return context
 
     def render(self, render_payload, render_headers):
         try:
@@ -102,20 +116,18 @@ class ReactSSRView(View):
                 timeout=self.render_timeout
             )
         except requests.ReadTimeout:
-            raise RenderServerError(
-                "Could not render within time allotted: {}".format(
+            raise RenderError(
+                "Failed to render within {} seconds.".format(
                     self.render_timeout
                 )
             )
         except requests.ConnectionError:
-            raise RenderServerError(
-                "Could not connect to render server at {}".format(
-                    self.render_url
-                )
+            raise RenderError(
+                "Failed to connect to {}".format(self.render_url)
             )
         if response.status_code != 200:
-            raise RenderServerError(
-                "Unexpected response from render server at {} - {}: {}".format(
+            raise RenderError(
+                "Failed to render at {} - {}: {}".format(
                     self.render_url,
                     response.status_code,
                     response.text,
@@ -133,47 +145,61 @@ class ReactSSRView(View):
         return ret
 
     def get_default_state(self, reducer_name):
-        reducer_dir = os.path.join(self.reducers_dir, reducer_name)
-        state_file = os.path.join(reducer_dir, "state.json")
-        state = read_json(state_file)
-        return state
+        url = "/".join([self.default_state_url, reducer_name])
+        try:
+            response = requests.get(
+                url,
+                timeout=self.default_state_timeout,
+            )
+        except requests.ReadTimeout:
+            raise GetDefaultStateError(
+                "Failed to get default state for {} at {} within {} seconds.".format(reducer_name, url, self.default_state_timeout)
+            )
+        except requests.ConnectionError:
+            raise GetDefaultStateError(
+                "Failed to connect to {}.".format(url)
+            )
+        if response.status_code != 200:
+            raise GetDefaultStateError(
+                "Failed to get default state for {} at {} - {}: {}".format(
+                    reducer_name, url, response.status_code, response.text
+                )
+            )
+        return response.json()
 
     def get_user_serializer_class(self):
         if self.user_serializer_class is None:
             self.user_serializer_class = import_string(self.user_serializer)
         return self.user_serializer_class
 
-    def get_user_state(self, request):
+    def get_auth_user(self, request):
         user_serializer_class = self.get_user_serializer_class()
         try:
             serializer = user_serializer_class(request.user)
             state = serializer.data
         except AssertionError:
-            serializer = user_serializer_class(
-                request.user, context={"request": request})
+            serializer = user_serializer_class(request.user, context={
+                "request": request
+            })
             state = serializer.data
         return state
 
+    def get_auth_token(self, request):
+        raise Exception("get_auth_token() not implemented.")
+
     def get_auth_state(self, request):
-        auth_state = self.get_default_state("auth")
+        auth_state = self.get_default_state(self.auth_state_name)
         if request.user.is_authenticated:
-            token = jwt_encode_handler(jwt_payload_handler(request.user))
-            auth_state.update({
-                "isAuthenticated": True,
-                "token": token,
-            })
-            if self.user_serializer is not None:
-                user_state = self.get_user_state(request)
-                auth_state.update({
-                    "user": user_state
-                })
+            auth_state["isAuthenticated"] = True
+            if self.auth_tokens_name is not None:
+                auth_state[self.auth_tokens_name] = self.get_auth_token(request)
+            if self.auth_user_name is not None:
+                auth_state[self.auth_user_name] = self.get_auth_user(request)
         return auth_state
 
     def get_initial_state(self, request, page_state):
-        auth_state = self.get_auth_state(request)
-        page_state.update({
-            "auth": auth_state,
-        })
+        if self.auth_state_name is not None:
+            page_state[self.auth_state_name] = self.get_auth_state(request)
         return page_state
 
     def get_page_state(self, request, *args, **kwargs):

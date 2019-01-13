@@ -38,7 +38,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     #
     # Required
-    version="0.1.9",
+    version="0.2.3",
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -181,7 +181,6 @@ setup(
         #   "six", or "six>=1.7",
         "requests",
         "django>=2.0",
-        "djangorestframework-jwt",
     ],
 
     # List additional groups of dependencies here (e.g. development
