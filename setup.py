@@ -181,7 +181,7 @@ setup(
         # eg:
         #   "six", or "six>=1.7",
         "requests",
-        "django>=2.0",
+        "django>=1.11",
     ],
 
     # List additional groups of dependencies here (e.g. development
