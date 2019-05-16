@@ -6,6 +6,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from glob import glob
+from io import open
 from setuptools import setup, find_packages
 from os.path import abspath, basename, dirname, join, splitext
 
