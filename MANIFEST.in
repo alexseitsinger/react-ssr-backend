@@ -1,8 +1,3 @@
-# Include the README
-include *.md
-
-# Include the license file
+include README.md
 include LICENSE.txt
-
-# Include the HTML template
 recursive-include src/react_ssr/templates *
