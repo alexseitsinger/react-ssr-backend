@@ -16,6 +16,7 @@ from .settings import (
     RENDER_URL,
     RENDER_TIMEOUT,
     SECRET_KEY,
+    SECRET_KEY_HEADER_NAME,
     USER_SERIALIZER,
     DEFAULT_STATE_URL,
     DEFAULT_STATE_TIMEOUT,
@@ -31,6 +32,7 @@ class ReactSSRView(View):
     render_url = None
     render_timeout = None
     secret_key = None
+    secret_key_header_name = None
     user_serializer = None
     user_serializer_class = None
     status_code = 200
@@ -54,6 +56,8 @@ class ReactSSRView(View):
             self.render_timeout = RENDER_TIMEOUT
         if self.secret_key is None:
             self.secret_key = SECRET_KEY
+        if self.secret_key_header_name is None:
+            self.secret_key_header_name = SECRET_KEY_HEADER_NAME
         if self.user_serializer is None:
             self.user_serializer = USER_SERIALIZER
         if self.default_state_url is None:
@@ -69,11 +73,27 @@ class ReactSSRView(View):
         if self.auth_user_name is None:
             self.auth_user_name = AUTH_USER_NAME
 
-    def get_render_headers(self, request):
-        headers = {"content_type": "application/json"}
+    def set_secret_key_header(self, headers):
+        if self.secret_key is not None:
+            if self.secret_key_header_name is not None:
+                headers[self.secret_key_header_name] = self.secret_key
+        return headers
+
+    def get_default_state_headers(self):
+        headers = {"Content-Type": "application/json"}
+        headers = self.set_secret_key_header(headers)
+        return headers
+
+    def set_user_agent_header(self, headers, request):
         user_agent = request.META.get(self.user_agent_header_name, None)
         if user_agent is not None:
             headers["user-agent"] = user_agent
+        return headers
+
+    def get_render_headers(self, request):
+        headers = {"Content-Type": "application/json"}
+        headers = self.set_user_agent_header(headers, request)
+        headers = self.set_secret_key_header(headers)
         return headers
 
     def get_context(self, response):
@@ -136,13 +156,10 @@ class ReactSSRView(View):
         return response.json()
 
     def get_render_payload(self, request, initial_state):
-        ret = {
+        return {
             "url": request.path_info,
             "initialState": initial_state,
         }
-        if self.secret_key is not None:
-            ret["secretKey"] = self.secret_key
-        return ret
 
     def get_default_state(self, reducer_name):
         url = "/".join([self.default_state_url, reducer_name])
@@ -150,6 +167,7 @@ class ReactSSRView(View):
             response = requests.get(
                 url,
                 timeout=self.default_state_timeout,
+                headers=self.get_default_state_headers(),
             )
         except requests.ReadTimeout:
             raise GetDefaultStateError(
@@ -211,8 +229,8 @@ class ReactSSRView(View):
         initial_state = self.get_initial_state(request, page_state)
         render_payload = self.get_render_payload(request, initial_state)
         render_headers = self.get_render_headers(request)
-        response = self.render(render_payload, render_headers)
-        context = self.get_context(response)
+        rendered = self.render(render_payload, render_headers)
+        context = self.get_context(rendered)
         return render(
             request,
             self.template_name,
