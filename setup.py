@@ -32,7 +32,7 @@ setup(
         "Natural Language :: English",
         "Operating System :: OS Independent",
     ],
-    keywords=["django", "react", "server-side rendering"]
+    keywords=["django", "react", "server-side rendering"],
     project_urls={
         "Source": URL,
         "Tracker": "{}/issues".format(URL)
