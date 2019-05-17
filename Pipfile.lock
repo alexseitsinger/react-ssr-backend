@@ -1,0 +1,43 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "ba1a785b1b24c2e242c2ded7410f1a5a504fd855ac3f324b448cbb78ac979e8f"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.7"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {},
+    "develop": {
+        "click": {
+            "hashes": [
+                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
+                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
+            ],
+            "version": "==7.0"
+        },
+        "package-controller": {
+            "hashes": [
+                "sha256:42a8cd5a28dd492db7766f945eed1e348235b506df8bc2996b6c96fc5dcf2d1a",
+                "sha256:7092dc7a9fcfc64c781c348ce555c8a7f3484f8db3599e7dd09f93f2520adc3e"
+            ],
+            "index": "pypi",
+            "version": "==0.3.6"
+        },
+        "semver": {
+            "hashes": [
+                "sha256:41c9aa26c67dc16c54be13074c352ab666bce1fa219c7110e8f03374cd4206b0",
+                "sha256:5b09010a66d9a3837211bb7ae5a20d10ba88f8cb49e92cb139a69ef90d5060d8"
+            ],
+            "version": "==2.8.1"
+        }
+    }
+}
