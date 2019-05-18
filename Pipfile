@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-package-controller = "==0.3.9"
+package-controller = {file = "file:///home/main/mnt/da0/code/packages/python/library/package_controller/dist/package_controller-0.3.10-py3-none-any.whl"}
 
 [packages]
 
