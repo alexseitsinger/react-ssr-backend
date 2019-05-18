@@ -12,7 +12,7 @@ pip install react-ssr
 
 ## Views
 
-### __ReactSSRView
+#### ReactSSRView
 
 A class based view for rendering react on the server through django.
 
@@ -25,8 +25,8 @@ A class based view for rendering react on the server through django.
   * set_secret_key_header(headers)
     - Sets the 'Secret-Key' header to the provded headers dict.
     - If set, this header is used to authorize the request to render with the front-end server.
-  
-  **** get_default_state_headers()
+
+  * get_default_state_headers()
     - Invoked by ReactSSRView.get_default_state().
     - Adds the following headers, by default: 'Content-Type', 'Secret-Key'.
   
