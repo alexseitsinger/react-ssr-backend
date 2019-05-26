@@ -16,7 +16,7 @@ setup(
     author="Alex Seitsinger",
     author_email="contact@alexseitsinger.com",
     url=URL,
-    install_requires=["requests", "Django>=1.11"],
+    install_requires=["requests", "Django>=1.11", "click"],
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
     include_package_data=True,
@@ -33,6 +33,9 @@ setup(
         "Operating System :: OS Independent",
     ],
     keywords=["django", "react", "server-side rendering"],
+    entry_points={
+        "console_scripts": ["ssr={}.cli:main".format(PACKAGE_NAME)]
+    },
     project_urls={
         "Source": URL,
         "Tracker": "{}/issues".format(URL)
