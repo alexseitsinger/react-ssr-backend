@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 package-controller = "==0.3.10"
+click = "*"
 
 [packages]
 
