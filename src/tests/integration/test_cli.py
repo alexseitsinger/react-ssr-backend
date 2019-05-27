@@ -1,7 +1,8 @@
 import pytest
 from click.testing import CliRunner
 
-from ...cli import main
+# Load our package.
+from react_ssr.cli import main
 
 
 def test_server_starts_and_stays_running():
