@@ -1,7 +1,5 @@
 import pytest
 from click.testing import CliRunner
-
-# Load our package.
 from react_ssr.cli import main
 
 
