@@ -12,3 +12,22 @@ __pycache__/
 .tox
 .cache
 .pytest_cache/
+
+# Node stuff
+node_modules/
+yarn-error.log
+
+# Frontend bundles (from testing)
+src/tests/frontend/bundles/client/development/*
+!src/tests/frontend/bundles/client/development/.gitignore
+src/tests/frontend/bundles/server/development/*
+!src/tests/frontend/bundles/server/development/.gitignore
+
+# Webpack stats
+webpack-stats.client.development.json
+
+# Misc files
+*.core
+
+
+
