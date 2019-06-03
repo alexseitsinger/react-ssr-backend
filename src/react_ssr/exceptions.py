@@ -1,4 +1,4 @@
-class RenderError(Exception):
+class RenderFrontendError(Exception):
     pass
 
 
