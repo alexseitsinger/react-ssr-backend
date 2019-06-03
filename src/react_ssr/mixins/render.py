@@ -100,17 +100,21 @@ class RenderMixin(object):
     def render_backend(self, request, context):
         return render(request, self.render_template_name, context)
 
-    @method_decorator(ensure_csrf_cookie)
-    def get(self, request, *args, **kwargs):
+    def render(self, request, *args, **kwargs):
         # Create the initial state to use for the render.
         initial_state = self.get_initial_state(request, *args, **kwargs)
         # Get the payload and headers to use for the render.
         render_payload = self.get_render_payload(request, initial_state)
         render_headers = self.get_render_headers(request)
         # Get the rendered output from our server-side bundle.
-        rendered = self.render_frontend(render_payload, render_headers)
+        rendered_frontend = self.render_frontend(render_payload, render_headers)
         # Convert it into a context object for django.
-        context = self.get_context(rendered)
+        context = self.get_context(rendered_frontend)
         # Render the template with Django, using this context.
-        return self.render_backend(request, context)
+        rendered_backend = self.render_backend(request, context)
+        return rendered_backend
 
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        rendered = self.render(request, *args, **kwargs)
+        return rendered
