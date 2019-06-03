@@ -1,3 +1,10 @@
+<a name="v1.1.0"></a>
+## [v1.1.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v1.0.0...v1.1.0) (2019-06-03)
+
+### Code Refactoring
+- Adds `.render()` to `RenderMixin`. ([2dde7d6](https://github.com/alexseitsinger/react-ssr-backend/commit/2dde7d6c20e39d0581045341a3531ce6af9c2c4b))
+
+
 <a name="v1.0.0"></a>
 ## [v1.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v0.2.5...v1.0.0) (2019-06-03)
 
