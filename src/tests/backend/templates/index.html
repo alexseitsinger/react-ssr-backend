@@ -1,0 +1,13 @@
+{% extends "react_ssr/base.html" %}
+
+{% load render_bundle from webpack_loader %}
+
+{% block HEAD %}
+{% endblock %}
+
+{% block BODY %}
+    <main role="main"></main>
+    {% render_bundle "runtime" %}
+    {% render_bundle "vendors" %}
+    {% render_bundle "main" %}
+{% endblock %}
