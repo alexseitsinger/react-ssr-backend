@@ -12,104 +12,135 @@ pip install react-ssr
 
 ## Views
 
-#### ReactSSRView
+- **ReactView**
+  A class based view that uses `RenderMixin`.
 
-A class based view for rendering react on the server through django.
+## Mixins
 
-#### Methods
+- __AuthStateMixin__
+  - __Attributes__
+    - auth_state_name
+      The name of the auth state in the reducer.
+    - auth_state_user_key
+      The key used to store the user object in the auth state.
+    - auth_state_tokens_key
+      The key used to store the tokens in the auth state.
+    - auth_state_user_serializer
+      The path to the user serializer class.
+    - auth_state_user_serializer_class
+      The imported user serializer class.
+  - __Methods__
+    - get_auth_state_user_serializer_class
+      Returns the user serializer class to use.
+    - get_auth_state_user
+      Returns the serialized current user object.
+    - get_auth_state_tokens
+      Should return a dictionary with the JWT to use.
+    - get_auth_state
+      Returns a dictionary to use as the auth state.
 
-  * initialize_settings()
-    - Invoked when the class is initialized.
-    - Loads the settings for the class to use.
-  
-  * set_secret_key_header(headers)
-    - Sets the 'Secret-Key' header to the provded headers dict.
-    - If set, this header is used to authorize the request to render with the front-end server.
+- __DefaultStateMixin__
+  - __Attributes__
+    - default_state_timeout 
+      The amoutn of time to wait before cancelling the request.
+    - default_state_url
+      The url to use to get the default state. (Expects the use of `@alexseitsinger/react-ssr` ndde package)
+    - default_state_headers
+      The headers to use in the request to get the default state.
+  - __Methods__
+    - get_default_state_headers
+      Returns a dictionary of headers to use in the request for getting a
+      default state.
+    - get_default_state
+      Returns the default state of the reducer by reading the `state.json` file
+      from the reducer's directory.
 
-  * get_default_state_headers()
-    - Invoked by ReactSSRView.get_default_state().
-    - Adds the following headers, by default: 'Content-Type', 'Secret-Key'.
-  
-  * set_user_agent_header(headers, request)
-    - Invoked by ReactSSRView.get_render_headers().
-    - Adds the user agent header of the original request, to ensure that browser settings are usable by javascript (window dimensions, etc).
-  
-  * get_render_headers(request)
-    - Invoked by ReactSSRView.get().
-    - Returns a dictionary of headers to use as the request headers in the ReactSSRView.render() method.
-    - Adds the following headers, by default: 'Content-Type', 'User-Agent', 'Secret-Key'.
-  
-  * get_context(response)
-    - Converts the response data from server-side rendering into the template context used by django.
-    - By default, reads the response data for the 'html', and 'state' keys.
-    - By default, returns a dict with 'html', and 'state' key/value pairs.
-    - If this method fails to retrieve the 'html', and 'state' key/value pairs, it will raise an Exception, since these are necessary rendering final output.
-  
-  * render(render_payload, render_headers)
-    - Invoked by ReactSSRView.get().
-    - Attempts to render the app server-side over HTTP(S), using the <render_payload> and <render_headers> provided.
-    - It throws an exception if: request takes too long, cannot connect to server, javascript error.
-    - Upon success, returns the response as json. 
-  
-  * get_render_payload(request, initial_state)
-    - Invoked by ReactSSRView.get().
-    - This returns a dict that contains a 'url' and 'initialState' key/value pair.
-    - This dict is passed to ReactSSRView.render(), to render the app server-side and produce its output.
-  
-  * get_default_state(reducer_name)
-    - Usually invoked in each ReactSSRView.get_page_state() to get the default state to update from.
-    - Attempts to read the default, initial state of the reducer specified, via HTTP(S).
-    - Assumes each reducer is split into their own directories, with each containing a 'state.json' file.
-    - The 'state.json' file is used to populate the reducer's default state from both client-side and server-side.
-  
-  * get_user_serializer_class()
-    - If the <user_serializer_class> is not None, it will import the class, save it to this class, and return it.
-  
-  * get_auth_user(request)
-    - Attempts to return the serialized version of the user, of the request, for use in the 'auth' state dict.
-  
-  * get_auth_token(request)
-    - Must be implemented in each class that inherits ReactSSRView.
-    - If it is not implemented, and it is invoked, it will raise an Exception.
-    - Invoked by ReactSSRView.get_auth_state(), if the <auth_tokens_name> is set on the class.
-  
-  * get_auth_state(request)
-    - Invoked by ReactSSRView.get_initial_state().
-    - Creates an 'auth' state dict.
-    - Sets 'isAuthenticated' to True in the 'auth' state dict.
-    - Sets <auth_tokens_name> in the 'auth' state dict, if it exists.
-    - Sets <auth_user_name> in the 'auth' state dict, if it exists.
-  
-  * get_initial_state(request, page_state)
-    - Invoked by ReactSSRView.get().
-    - Adds the 'auth' state to the 'page' state dict.
-  
-  * get_page_state(request *args, **kwargs):
-    - Must be implemented on each child class that inherit 'ReactSSRView'
-    - If not implemented, any attempts to render will raise an Exception.
-    - Should return the page-specific reducer state, as a dict 
-  
-  * get(request, *args, **kwargs)
-    - Invoked by GET requests.
-    - Returns the server-side rendered markup, and state, using the template specified in settings.
-  
-## Usage
+- **RenderMixin**
+  - **Attributes**
+    - render_template_name
+      The template that expects to use our context.
+    - render_url
+      The URL to request our renders from.
+    - render_timeout
+      The time to wait before cancelling our render request.
+    - render_headers
+      A dictionary of headers to use when sending the render request.
+  - **Methods**
+    - get_page_state(request, \*args, \*\*kwargs)
+      Returns a dictionary to update the initial state for redux store.
+    - get_initial_state(request, \*args, \*\*kwargs)
+      Returns a dictionary to use as the intial state for the redux store.
+    - get_context(response)
+      Returns the dictionary to use from the rendered front-end, as a context for a django template.
+    - get_render_payload(request, intitial_state)
+      Returns the dictionary to use in the request to render the front-end.
+    - get_render_headers(request)
+      Returns a dictionary of headers to use in the request to render the front-end.
+    - render_frontend(render_payload, render_headers)
+      Returns the JSON data from the rendered front-end application.
+    - render_backend(request, context)
+      Returns a rendered django template using the context provided.
+    - get(request, \*args, \*\*kwargs)
+      Returns a rendered django template response using the context from the `render_frontend` call.
+
+- **SecretKeyMixin**
+  - **Attributes**
+    - secret_key_header_name
+      The name to use to pass the secret key as a header. (Expects to be received by the Node server from `@alexseitsinger/react-ssr`)
+    - secret_key
+      The value of the secret key.
+  - **Methods**
+    - get_render_headers(request)
+      Adds the `secret-key` header to the dictionary of headers used in the request from `render_frontend`.
+    - get_default_state_headers()
+      Adds the `secret-key` header to the dictionary of headers used in the request from `get_default_state`.
+    - get_secret_key_header()
+      Returns a dictionary containing the `secret-key` header to use for other requests.
+
+-** UserAgentMixin**
+  - **Attributes**
+    - user_agent_header_name
+      The name of the header to read from requests to get the `user-agent`. This is passed onto the render requests.
+  -** Methods**
+    - get_render_headers(request)
+      Adds the `user-agent` header to the dictionary of headers used in the request from `render_frontend`.
+    - get_user_agent_header(
+      Returns a dictionary containing the `user-agent` header to use in other requests.
+
+## Example
 
 settings.py
 
 ```python
+INSTALLED_APPS = [
+    ...
+    "react_ssr"
+]
+
 REACT_SSR = {
-    "TEMPLATE_NAME": "index_ssr.html",
-    "SECRET_KEY": "THIS_IS_A_SUPER_SECRET_KEY",
-    "USER_SERIALIZER": "path.to.user.serializer.UserSerializer",
-    "RENDER_URL": "http://0.0.0.0:3000/render",
-    "RENDER_TIMEOUT": 10.0,
-    "DEFAULT_STATE_URL": "http://0.0.0.0:3000/state",
-    "DEFAULT_STATE_TIMEOUT": 10.0,
+    "RENDER": {
+        "URL": "https://0.0.0.0:3000/render",
+        "TIMEOUT": 5.0,
+        "TEMPLATE_NAME": "index.html",
+    }
+    "STATE": {
+        "URL": "http://0.0.0.0:3000/state",
+        "TIMEOUT": 5.0,
+        "AUTH": {
+            "USER_SERIALIZER": "path.to.user.serializer.UserSerializer",
+            "USER_KEY": "user",
+            "TOKENS_KEY": "tokens",
+            "NAME": "auth",
+        }
+    },
+    "SECRET_KEY": {
+        "HEADER_NAME": "secret-key",
+        "VALUE": "THIS_IS_A_SECRET_KEY",
+    }
 }
 ```
 
-templates/index_ssr.html
+index.html
 
 ```html
 {% extends "react_ssr/base.html" %}
@@ -119,8 +150,6 @@ templates/index_ssr.html
 
 {% block head %}
     <script>window.__STATE__ == {{ state | safe }};</script>
-    {{ title | safe }}
-    {{ meta | safe }}
 {% endblock %}
 
 {% block body %}
@@ -147,13 +176,13 @@ urlpatterns = [
 views.py
 
 ```python
-from react_ssr.views import ReactSSRView
+from react_ssr.views import ReactView
+from react_ssr.mixins.default_state import DefaultStateMixin
 
-class ReactSSRViewBase(ReactSSRView):
+class ReactViewBase(DefaultStateMixin, ReactView):
     context_names = ["title", "meta"]
 
-    def get_auth_token(self, request):
-        # Retrieve the JWT to include in the 'auth' reducer.
+    def get_auth_state_tokens(self, request):
         refresh_token = "fdsafdsad23423"
         access_token = "fdsafsd432432fdsaf"
         return {
@@ -173,14 +202,8 @@ class ReactSSRViewBase(ReactSSRView):
                 context.update({name: data})
         return context
 
-    def get_page_state(self, request, *args, **kwargs):
-        return {
-            # Add some state, that matches reducers, here.
-            # This is included in all the page states that use this class.
-        }
 
-
-class IndexPageView(ReactSSRViewBase):
+class IndexPageView(ReactViewBase):
     def get_page_state(self, request, *args, **kwargs):
         # Get the default state from the reducer
         default_state = self.get_default_state("landing")
