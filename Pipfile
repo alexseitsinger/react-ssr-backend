@@ -6,6 +6,10 @@ verify_ssl = true
 [dev-packages]
 click = "*"
 pytest = "*"
+django = "*"
+react-ssr = {editable = true,path = "."}
+psycopg2-binary = "*"
+webpack-loader-remote = "*"
 
 [packages]
 
