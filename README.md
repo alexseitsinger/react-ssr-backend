@@ -13,98 +13,179 @@ pip install react-ssr
 ## Views
 
 - **ReactView**
+  
   A class based view that uses `RenderMixin`.
 
 ## Mixins
 
-- __AuthStateMixin__
-  - __Attributes__
-    - auth_state_name
+- **AuthStateMixin**
+  
+  - **Attributes**
+    
+    - **auth\_state\_name**
+      
       The name of the auth state in the reducer.
-    - auth_state_user_key
+    
+    - **auth\_state\_user\_key**
+      
       The key used to store the user object in the auth state.
-    - auth_state_tokens_key
+    
+    - **auth\_state\_tokens\_key**
+      
       The key used to store the tokens in the auth state.
-    - auth_state_user_serializer
+    
+    - **auth\_state\_user\_serializer**
+      
       The path to the user serializer class.
-    - auth_state_user_serializer_class
+    
+    - **auth\_state\_user\_serializer\_class**
+      
       The imported user serializer class.
+  
   - __Methods__
-    - get_auth_state_user_serializer_class
+    
+    - **get\_auth\_state\_user\_serializer\_class()**
+      
       Returns the user serializer class to use.
-    - get_auth_state_user
+    
+    - **get\_auth\_state\_user(_request_)**
+      
       Returns the serialized current user object.
-    - get_auth_state_tokens
+    
+    - **get\_auth\_state\_tokens(_request_)**
+      
       Should return a dictionary with the JWT to use.
-    - get_auth_state
+    
+    - **get\_auth\_state(_request_)**
+      
       Returns a dictionary to use as the auth state.
 
-- __DefaultStateMixin__
-  - __Attributes__
-    - default_state_timeout 
-      The amoutn of time to wait before cancelling the request.
-    - default_state_url
+    - **get\_initial\_state(_request_, _\*args, _\*\*kwargs_)**
+    
+      Adds the auth state to the initial state dictionary.
+
+- **DefaultStateMixin**
+  
+  - **Attributes**
+    
+    - **default\_state\_timeout** 
+      
+      The amount of time to wait before cancelling the request.
+    
+    - **default\_state\_url**
+      
       The url to use to get the default state. (Expects the use of `@alexseitsinger/react-ssr` ndde package)
-    - default_state_headers
+  
+    - **default\_state\_headers**
+    
       The headers to use in the request to get the default state.
+  
   - __Methods__
-    - get_default_state_headers
-      Returns a dictionary of headers to use in the request for getting a
-      default state.
-    - get_default_state
-      Returns the default state of the reducer by reading the `state.json` file
-      from the reducer's directory.
+    
+    - **get\_default\_state\_headers()**
+      
+      Returns a dictionary of headers to use in the request for getting a default state.
+    
+    - **get\_default\_state(_reducer\_name_)**
+      
+      Returns the default state of the reducer by reading the `state.json` file from the reducer's directory.
 
 - **RenderMixin**
+  
   - **Attributes**
-    - render_template_name
+    
+    - **render\_template\_name**
+  
       The template that expects to use our context.
-    - render_url
+    
+    - **render\_url**
+      
       The URL to request our renders from.
-    - render_timeout
+    
+    - **render\_timeout**
+      
       The time to wait before cancelling our render request.
-    - render_headers
+    
+    - **render\_headers**
+  
       A dictionary of headers to use when sending the render request.
+  
   - **Methods**
-    - get_page_state(request, \*args, \*\*kwargs)
+    
+    - **get\_page\_state(_request_, _\*args_, _\*\*kwargs_)**
+      
       Returns a dictionary to update the initial state for redux store.
-    - get_initial_state(request, \*args, \*\*kwargs)
+    
+    - **get\_initial\_state(_request_, _\*args_, _\*\*kwargs_)**
+    
       Returns a dictionary to use as the intial state for the redux store.
-    - get_context(response)
+    
+    - **get\_context(_response_)**
+      
       Returns the dictionary to use from the rendered front-end, as a context for a django template.
-    - get_render_payload(request, intitial_state)
+    
+    - **get\_render\_payload(_request_, _intitial\_state_)**
+      
       Returns the dictionary to use in the request to render the front-end.
-    - get_render_headers(request)
+    
+    - **get\_render\_headers(_request_)**
+      
       Returns a dictionary of headers to use in the request to render the front-end.
-    - render_frontend(render_payload, render_headers)
+    
+    - **render\_frontend(_render\_payload_, _render\_headers_)**
+      
       Returns the JSON data from the rendered front-end application.
-    - render_backend(request, context)
+    
+    - **render\_backend(_request_, _context_)**
+      
       Returns a rendered django template using the context provided.
-    - get(request, \*args, \*\*kwargs)
+  
+    - **get(_request_, _\*args_, _\*\*kwargs_)**
+      
       Returns a rendered django template response using the context from the `render_frontend` call.
 
 - **SecretKeyMixin**
+  
   - **Attributes**
-    - secret_key_header_name
+  
+    - **secret\_key\_header\_name**
+    
       The name to use to pass the secret key as a header. (Expects to be received by the Node server from `@alexseitsinger/react-ssr`)
-    - secret_key
+    
+    - **secret\_key**
+ 
       The value of the secret key.
+
   - **Methods**
-    - get_render_headers(request)
+
+    - **get\_render\_headers(_request_)**
+
       Adds the `secret-key` header to the dictionary of headers used in the request from `render_frontend`.
-    - get_default_state_headers()
+
+    - **get\_default\_state\_headers()**
+      
       Adds the `secret-key` header to the dictionary of headers used in the request from `get_default_state`.
-    - get_secret_key_header()
+
+    - **get\_secret\_key\_header()**
+      
       Returns a dictionary containing the `secret-key` header to use for other requests.
 
--** UserAgentMixin**
+**UserAgentMixin**
+  
   - **Attributes**
-    - user_agent_header_name
+
+    - **user\_agent\_header\_name**
+
       The name of the header to read from requests to get the `user-agent`. This is passed onto the render requests.
-  -** Methods**
-    - get_render_headers(request)
+
+  - **Methods**
+
+    - **get\_render\_headers(_request_)**
+
       Adds the `user-agent` header to the dictionary of headers used in the request from `render_frontend`.
-    - get_user_agent_header(
+
+    - **get\_user\_agent\_header()**
+
       Returns a dictionary containing the `user-agent` header to use in other requests.
 
 ## Example
