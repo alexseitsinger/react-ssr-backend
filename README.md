@@ -60,7 +60,7 @@ pip install react-ssr
       
       Returns a dictionary to use as the auth state.
 
-    - **get\_initial\_state(_request_, _\*args, _\*\*kwargs_)**
+    - **get\_initial\_state(_request_, _\*args_, _\*\*kwargs_)**
     
       Adds the auth state to the initial state dictionary.
 
