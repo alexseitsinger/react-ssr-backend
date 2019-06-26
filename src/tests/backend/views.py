@@ -6,6 +6,9 @@ from react_ssr.mixins.user_agent import UserAgentMixin
 
 
 class IndexPageView(CoreStateMixin, ReactView):
+
+    core_state_tokens_path = None
+
     def get_page_state(self, request, *args, **kwargs):
         default_state = self.get_default_state("home")
         state = {"home": default_state}

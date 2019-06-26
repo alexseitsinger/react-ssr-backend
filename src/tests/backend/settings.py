@@ -18,10 +18,18 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "test",
-        "HOST": "192.168.1.101",
+        "HOST": "127.0.0.101",
         "PORT": 5432,
         "USER": "main",
         "PASSWORD": "test",
+    }
+}
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "BUNDLE_DIR_NAME": "dist/",
+        "STATS_FILE_TIMEOUT": 10,
+        "STATS_FILE": "http://127.0.0.102:3000/stats/client/development",
     }
 }
 

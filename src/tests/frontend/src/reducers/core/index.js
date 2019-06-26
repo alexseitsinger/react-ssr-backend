@@ -2,7 +2,7 @@ import initialState from "./state.json"
 import { actionTypes } from "actions/core/types"
 
 
-export function authReducer(state = initialState, action) {
+export function coreReducer(state = initialState, action) {
   switch (action.type) {
     default: {
       return state

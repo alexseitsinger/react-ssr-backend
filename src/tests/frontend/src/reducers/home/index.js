@@ -3,7 +3,8 @@ import initialState from "./state.json"
 
 export function homeReducer(state = initialState, action) {
   switch (action.type) {
-    default:
+    default: {
       return state
+    }
   }
 }

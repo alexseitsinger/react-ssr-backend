@@ -1,36 +1,36 @@
 {
-	"name": "frontend",
-	"version": "0.1.0",
-	"author": "Alex Seitsinger",
-	"license": "BSD-2-Clause",
-	"dependencies": {
-		"@alexseitsinger/react-ssr": "1.0.6",
-		"@babel/runtime": "7.4.5",
-		"core-js": "3.1.2",
-		"prop-types": "15.7.2",
-		"react": "16.8.6",
-		"react-dom": "16.8.6",
-		"react-redux": "7.1.0-alpha.5",
-		"react-router": "^5.0.0",
-		"redux": "4.0.1"
-	},
-	"devDependencies": {
-		"@babel/core": "7.4.5",
-		"@babel/plugin-transform-runtime": "7.4.4",
-		"@babel/preset-env": "7.4.5",
-		"@babel/preset-react": "7.0.0",
-		"babel-loader": "8.0.6",
-		"nodemon": "1.19.0",
-		"webpack": "5.0.0-alpha.14",
-		"webpack-bundle-tracker": "0.4.2-beta",
-		"webpack-cli": "3.3.2",
-		"webpack-dev-server": "3.4.1",
-		"webpack-merge": "4.2.1",
-		"webpack-node-externals": "1.7.2"
-	},
-	"scripts": {
-		"start:server:development": "./node_modules/.bin/nodemon --exec './node_modules/.bin/react-ssr-server --bundlePath bundles/server/development --bundleName server.js --address 192.168.1.102'",
-		"watch:client:development": "BABEL_ENV=client-development ./node_modules/.bin/webpack-dev-server --config=webpack/client/development.js",
-		"watch:server:development": "BABEL_ENV=server-development ./node_modules/.bin/webpack --config=webpack/server/development.js"
-	}
+  "name": "frontend",
+  "version": "0.1.0",
+  "author": "Alex Seitsinger",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "@alexseitsinger/react-ssr": "^1.3.0",
+    "@alexseitsinger/redux-action-types": "^0.1.1",
+    "@babel/runtime": "7.4.5",
+    "core-js": "3.1.4",
+    "prop-types": "15.7.2",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-redux": "7.1.0",
+    "react-router": "^5.0.1",
+    "redux": "4.0.1"
+  },
+  "devDependencies": {
+    "@alexseitsinger/react-ssr-webpack-config": "^0.1.0",
+    "@babel/core": "7.4.5",
+    "@babel/plugin-transform-runtime": "7.4.4",
+    "@babel/preset-env": "7.4.5",
+    "@babel/preset-react": "7.0.0",
+    "babel-loader": "8.0.6",
+    "nodemon": "1.19.1",
+    "webpack": "^4.35.0",
+    "webpack-cli": "3.3.5",
+    "webpack-dev-server": "3.7.2"
+  },
+  "scripts": {
+    "servers": "./node_modules/.bin/react-ssr-servers",
+    "start:server:development": "./node_modules/.bin/nodemon --exec './node_modules/.bin/react-ssr-server --bundlePath dist/server/development --bundleName server.js --address 127.0.0.102'",
+    "watch:client:development": "BABEL_ENV=client-development ./node_modules/.bin/webpack-dev-server --config=webpack-config.client.development.js",
+    "watch:server:development": "BABEL_ENV=server-development ./node_modules/.bin/webpack --config=webpack-config.server.development.js"
+  }
 }
