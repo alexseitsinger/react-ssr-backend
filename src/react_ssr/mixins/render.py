@@ -6,10 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from ..exceptions import (
-    RenderFrontendError,
-    GetContextError,
-)
+from ..exceptions import RenderFrontendError, GetContextError
 from ..settings.render import (
     RENDER_TEMPLATE_NAME,
     RENDER_URL,
@@ -40,32 +37,29 @@ class RenderMixin(object):
             stack = error.get("stack", None)
             if message is not None and stack is not None:
                 raise GetContextError(
-                    "Message: {}\n\nStack Trace: {}".format(message, stack))
+                    "Message: {}\n\nStack Trace: {}".format(message, stack)
+                )
             raise GetContextError(error)
 
         # If the response doesn't contain an "html" key, raise an exception.
         html = response.get("html", None)
         if html is None:
             raise GetContextError(
-                "The response is missing 'html'.\n\n{}".format(response))
+                "The response is missing 'html'.\n\n{}".format(response)
+            )
 
         # If the response doesn't contain a "state" key, raise an exception.
         state = response.get("state", None)
         if state is None:
             raise GetContextError(
-                "The response is missing 'state'.\n\n{}".format(response))
+                "The response is missing 'state'.\n\n{}".format(response)
+            )
 
         # Return a dictionary to use as a template context for rendering with Django.
-        return {
-            "html": html,
-            "state": json.dumps(state),
-        }
+        return {"html": html, "state": json.dumps(state)}
 
     def get_render_payload(self, request, initial_state):
-        return {
-            "url": request.path_info,
-            "initialState": initial_state,
-        }
+        return {"url": request.path_info, "initialState": initial_state}
 
     def get_render_headers(self, request):
         headers = self.render_headers.copy()
@@ -76,24 +70,20 @@ class RenderMixin(object):
         timeout = self.render_timeout
         try:
             response = requests.post(
-                url,
-                json=render_payload,
-                headers=render_headers,
-                timeout=timeout
+                url, json=render_payload, headers=render_headers, timeout=timeout
             )
             status_code = response.status_code
             if status_code != 200:
                 raise RenderFrontendError(
                     "Could not render front-end. {} - {}: {}".format(
-                        url,
-                        status_code,
-                        response.text,
+                        url, status_code, response.text
                     )
                 )
             return response.json()
         except requests.ReadTimeout:
             raise RenderFrontendError(
-                "Could not render front-end within {} seconds.".format(timeout))
+                "Could not render front-end within {} seconds.".format(timeout)
+            )
         except requests.ConnectionError:
             raise RenderFrontendError("Could not connect to {}.".format(url))
 
