@@ -1,21 +1,23 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 from setuptools import setup, find_packages
-from setup_utils import DIRECTORY_NAME, PACKAGE_NAME, read, read_section
+from setup_utils import read, read_section
 
-URL = "https://github.com/alexseitsinger/{}-backend".format(DIRECTORY_NAME)
+PACKAGE_NAME = "react-ssr"
+SOURCE_DIR_NAME = "react_ssr"
+HOMEPAGE_URL = "https://www.alexseitsinger.com/packages/python/{}".format(PACKAGE_NAME)
+GITHUB_URL = "https://github.com/alexseitsinger/{}-backend".format(PACKAGE_NAME)
 README_NAME = "README.md"
-
 
 setup(
     name=PACKAGE_NAME,
-    version=read(("src", PACKAGE_NAME, "__init__.py",), "__version__"),
+    version=read(("src", SOURCE_DIR_NAME, "__init__.py"), "__version__"),
     description=read_section((README_NAME,), "Description", (0,)),
     long_description=read((README_NAME,)),
     long_description_content_type="text/markdown",
     author="Alex Seitsinger",
     author_email="software@alexseitsinger.com",
-    url=URL,
+    url=HOMEPAGE_URL,
     install_requires=["requests", "Django>=1.11", "click"],
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
@@ -37,7 +39,8 @@ setup(
     ],
     keywords=["django", "react", "server-side rendering"],
     project_urls={
-        "Source": URL,
-        "Tracker": "{}/issues".format(URL)
-    }
+        "Documentation": HOMEPAGE_URL,
+        "Source": GITHUB_URL,
+        "Tracker": "{}/issues".format(GITHUB_URL),
+    },
 )

@@ -3,8 +3,6 @@ import re
 from io import open
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-DIRECTORY_NAME = os.path.basename(ROOT)
-PACKAGE_NAME = DIRECTORY_NAME.replace("-", "_")
 RE_VARIABLE = r"{} = ['\"]([^'\"]*)['\"]"
 RE_README_SECTION_HEADING = r"#+ {}"
 RE_README_SECTION = r"{}[^#]*"
@@ -31,7 +29,7 @@ def read_section(path, title, sentences=(0,)):
 
 def read(parts, variable=None):
     path = os.path.join(ROOT, *parts)
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         content = f.read()
     if variable is None:
         return content
@@ -40,4 +38,3 @@ def read(parts, variable=None):
     if match:
         return match.group(1)
     raise RuntimeError("Failed to read {} in {}".format(variable, path))
-
