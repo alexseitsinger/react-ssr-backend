@@ -1,3 +1,10 @@
+<a name="v2.0.0"></a>
+## [v2.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v1.1.0...v2.0.0) (2019-06-26)
+
+### Code Refactoring
+- Changes AuthState to CoreState. ([12b014d](https://github.com/alexseitsinger/react-ssr-backend/commit/12b014dffb22194db868fccf89b2ec8da0cc859f))
+
+
 <a name="v1.1.0"></a>
 ## [v1.1.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v1.0.0...v1.1.0) (2019-06-03)
 
