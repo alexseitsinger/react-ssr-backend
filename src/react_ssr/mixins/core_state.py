@@ -1,4 +1,5 @@
 from django.utils.module_loading import import_string
+import re
 
 from .default_state import DefaultStateMixin
 from ..settings.core_state import (
@@ -38,8 +39,9 @@ class CoreStateMixin(DefaultStateMixin):
         raise NotImplementedError("get_core_state_tokens() is not implemented.")
 
     def set_core_state(self, state_path, value, core_state):
-        if state_path.startswith("core."):
-            state_path = state_path.replace("core.", "")
+        prefix = "{}.".format(self.core_state_name)
+        if state_path.startswith(prefix):
+            state_path = re.sub(r"^{}".format(prefix), "", state_path)
         bits = state_path.split(".")
         key = bits.pop()
         obj = core_state
