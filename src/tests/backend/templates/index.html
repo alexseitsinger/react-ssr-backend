@@ -2,12 +2,19 @@
 
 {% load render_bundle from webpack_loader %}
 
-{% block HEAD %}
+{% block head %}
+  <script>
+    window.__STATE__ = {{ state | safe }};
+  </script>
+  {{ title | safe }}
+  {{ meta | safe }}
 {% endblock %}
 
-{% block BODY %}
-    <main role="main"></main>
-    {% render_bundle "runtime" %}
-    {% render_bundle "vendors" %}
-    {% render_bundle "main" %}
+{% block body %}
+  <main role="main">
+    {{ html | safe }}
+  </main>
+  {% render_bundle "runtime" %}
+  {% render_bundle "vendors" %}
+  {% render_bundle "client" %}
 {% endblock %}

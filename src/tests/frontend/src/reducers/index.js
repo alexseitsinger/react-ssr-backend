@@ -1,11 +1,11 @@
 import { combineReducers } from "redux"
 
-import { authReducer } from "./auth"
+import { coreReducer } from "./core"
 import { homeReducer } from "./home"
 
 export function createRootReducer(history) {
   return combineReducers({
-    auth: authReducer,
+    core: coreReducer,
     home: homeReducer,
   })
 }

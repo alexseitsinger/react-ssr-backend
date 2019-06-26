@@ -1,29 +1,29 @@
 {
-	"presets": [
-		[
-			"@babel/preset-env",
-			{
-				"useBuiltIns": "entry",
-				"corejs": 3
-			}
-		],
-		"@babel/preset-react"
-	],
-	"env": {
-		"test": {
-			"plugins": []
-		},
-		"client-development": {
-			"plugins": []
-		},
-		"client-production": {
-            "plugins": []
-		},
-		"server-development": {
-			"plugins": []
-		},
-		"server-production": {
-			"plugins": []
-		}
-	}
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry",
+        "corejs": 3
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "env": {
+    "test": {
+      "plugins": []
+    },
+    "client-development": {
+      "plugins": []
+    },
+    "client-production": {
+      "plugins": []
+    },
+    "server-development": {
+      "plugins": []
+    },
+    "server-production": {
+      "plugins": []
+    }
+  }
 }

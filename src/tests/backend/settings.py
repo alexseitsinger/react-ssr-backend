@@ -28,29 +28,22 @@ DATABASES = {
 REACT_SSR = {
     "RENDER": {
         "TEMPLATE_NAME": "index.html",
-        "URL": "http://192.168.1.102:3000/render",
+        "URL": "http://127.0.0.102:3000/render",
         "TIMEOUT": 5.0,
-        "HEADERS": {
-            "Content-Type": "application/json",
-        }
+        "HEADERS": {"Content-Type": "application/json"},
     },
     "STATE": {
-        "URL": "http://192.168.1.102:3000/state",
+        "URL": "http://127.0.0.102:3000/state",
         "TIMEOUT": 5.0,
-        "HEADERS": {
-            "Content-Type": "application/json",
-        },
-        "AUTH": {
-            "NAME": "auth",
+        "HEADERS": {"Content-Type": "application/json"},
+        "CORE": {
+            "NAME": "core",
             "USER_SERIALIZER": None,
-            "USER_KEY": "user",
-            "TOKENS_KEY": "tokens",
-        }
+            "USER_PATH": "core.authentication.user",
+            "TOKENS_KEY": "core.authentication.tokens",
+        },
     },
-    "SECRET_KEY": {
-        "VALUE": "THIS_IS_A_SECRET_KEY",
-        "HEADER_NAME": "secret-key",
-    }
+    "SECRET_KEY": {"VALUE": "THIS_IS_A_SECRET_KEY", "HEADER_NAME": "secret-key"},
 }
 
 INSTALLED_APPS = [

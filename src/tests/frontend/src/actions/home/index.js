@@ -1,3 +1,3 @@
-import * as actionTypes from "./types"
+import { actionTypes } from "./types"
 
 
