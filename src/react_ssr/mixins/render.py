@@ -36,9 +36,7 @@ class RenderMixin(object):
             message = error.get("message", None)
             stack = error.get("stack", None)
             if message is not None and stack is not None:
-                raise GetContextError(
-                    "Message: {}\n\nStack Trace: {}".format(message, stack)
-                )
+                raise GetContextError("{}\n\n{}".format(message, stack))
             raise GetContextError(error)
 
         # If the response doesn't contain an "html" key, raise an exception.
