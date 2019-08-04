@@ -1,3 +1,18 @@
+<a name="v3.0.0"></a>
+## [v3.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v2.0.0...v3.0.0) (2019-08-04)
+
+### Code Refactoring
+- Changes .replace to re.sub. ([a2e9ff9](https://github.com/alexseitsinger/react-ssr-backend/commit/a2e9ff939077ff4bf38f2a613095e6721981089b))
+- Changes GetContextError message. ([4097757](https://github.com/alexseitsinger/react-ssr-backend/commit/4097757e81f15fa303e33bc9e47b92ede8f5658e))
+- Deletes unused core_states settings. ([709fe8a](https://github.com/alexseitsinger/react-ssr-backend/commit/709fe8a5a1389704aa1e3f00dfe71bbc6c2ec881))
+- Refactor core_state to authentication_state ([7446431](https://github.com/alexseitsinger/react-ssr-backend/commit/7446431640974ea5aa3cd09cf3b8703aad835b37))
+- Renames settings vars. ([4ddd40e](https://github.com/alexseitsinger/react-ssr-backend/commit/4ddd40e4aaff6219aecc4d6d58c926a4a4a02ff1))
+
+### Features
+- Adds `get_settings` util. ([3f9155a](https://github.com/alexseitsinger/react-ssr-backend/commit/3f9155acd35320c37f634cb8b84a4086180ebf11))
+- Adds new mixins. ([120cba7](https://github.com/alexseitsinger/react-ssr-backend/commit/120cba761662d9a581cd3b5b43b5f3a18df321e4))
+
+
 <a name="v2.0.0"></a>
 ## [v2.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v1.1.0...v2.0.0) (2019-06-26)
 
