@@ -1,13 +1,10 @@
-from ..settings.secret_key import (
-    SECRET_KEY_HEADER_NAME,
-    SECRET_KEY_VALUE,
-)
+from ..settings.secret_key import HEADER_NAME, VALUE
 
 
 class SecretKeyMixin(object):
 
-    secret_key_header_name = SECRET_KEY_HEADER_NAME
-    secret_key = SECRET_KEY_VALUE
+    secret_key_header_name = HEADER_NAME
+    secret_key_value = VALUE
 
     def get_render_headers(self, request):
         headers = super().get_render_headers(request)
@@ -22,9 +19,7 @@ class SecretKeyMixin(object):
     def get_secret_key_header(self):
         header_name = getattr(self, "secret_key_header_name", None)
         if header_name is not None:
-            header_value = getattr(self, "secret_key", None)
+            header_value = getattr(self, "secret_key_value", None)
             if header_value is not None:
                 return {header_name: header_value}
         return {}
-
-

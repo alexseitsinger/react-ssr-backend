@@ -8,13 +8,9 @@ REACT_SSR = {
     ...
 }
 """
-from django.conf import settings as django_settings
+from ..utils import get_settings
 
-REACT_SSR = getattr(django_settings, "REACT_SSR")
+SETTINGS = get_settings("SECRET_KEY")
 
-SECRET_KEY = REACT_SSR.get("SECRET_KEY", {})
-
-SECRET_KEY_VALUE = SECRET_KEY.get("VALUE", None)
-
-SECRET_KEY_HEADER_NAME = SECRET_KEY.get("HEADER_NAME", "secret-key")
-
+VALUE = SETTINGS.get("VALUE", None)
+HEADER_NAME = SETTINGS.get("HEADER_NAME", "secret-key")

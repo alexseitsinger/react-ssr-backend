@@ -1,29 +1,22 @@
 import json
 import requests
 from django.shortcuts import render
-from django.utils.module_loading import import_string
 from django.utils.decorators import method_decorator
-from django.views.generic.base import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from ..exceptions import RenderFrontendError, GetContextError
-from ..settings.render import (
-    RENDER_TEMPLATE_NAME,
-    RENDER_URL,
-    RENDER_TIMEOUT,
-    RENDER_HEADERS,
-)
+from ..settings.render import TEMPLATE_NAME, URL, TIMEOUT, HEADERS
 
 
 class RenderMixin(object):
 
-    render_template_name = RENDER_TEMPLATE_NAME
-    render_url = RENDER_URL
-    render_timeout = RENDER_TIMEOUT
-    render_headers = RENDER_HEADERS
+    render_template_name = TEMPLATE_NAME
+    render_url = URL
+    render_timeout = TIMEOUT
+    render_headers = HEADERS
 
     def get_page_state(self, request, *args, **kwargs):
-        raise NotImplementedError("get_page_state() is required on each class.")
+        raise NotImplementedError("get_page_state() is not implemented..")
 
     def get_initial_state(self, request, *args, **kwargs):
         page_state = self.get_page_state(request, *args, **kwargs)

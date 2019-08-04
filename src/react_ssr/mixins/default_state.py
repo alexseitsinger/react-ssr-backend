@@ -1,18 +1,14 @@
 import requests
 
 from ..exceptions import GetDefaultStateError
-from ..settings.default_state import (
-    DEFAULT_STATE_TIMEOUT,
-    DEFAULT_STATE_URL,
-    DEFAULT_STATE_HEADERS
-)
+from ..settings.default_state import TIMEOUT, URL, HEADERS
 
 
 class DefaultStateMixin(object):
 
-    default_state_timeout = DEFAULT_STATE_TIMEOUT
-    default_state_url = DEFAULT_STATE_URL
-    default_state_headers = DEFAULT_STATE_HEADERS
+    default_state_timeout = TIMEOUT
+    default_state_url = URL
+    default_state_headers = HEADERS
 
     def get_default_state_headers(self):
         headers = self.default_state_headers.copy()
@@ -28,14 +24,16 @@ class DefaultStateMixin(object):
             status_code = response.status_code
             if status_code != 200:
                 raise GetDefaultStateError(
-                    "Could not get default state from {} for {}.\n\n{}: {}"
-                    .format(reducer_name, url, status_code, response.text))
+                    "Could not get default state from {} for {}.\n\n{}: {}".format(
+                        reducer_name, url, status_code, response.text
+                    )
+                )
             return response.json()
         except requests.ReadTimeout:
             raise GetDefaultStateError(
-                "Could not get default state from {} for {} within {} seconds."
-                .format(reducer_name, url, self.default_state_timeout))
+                "Could not get default state from {} for {} within {} seconds.".format(
+                    reducer_name, url, self.default_state_timeout
+                )
+            )
         except requests.ConnectionError:
             raise GetDefaultStateError("Could not connect to {}.".format(url))
-
-

@@ -12,18 +12,11 @@ REACT_SSR = {
     ...
 }
 """
-from django.conf import settings as django_settings
+from ..utils import get_settings
 
-REACT_SSR = getattr(django_settings, "REACT_SSR")
+SETTINGS = get_settings("RENDER")
 
-RENDER = REACT_SSR.get("RENDER", {})
-
-RENDER_URL = RENDER.get("URL", "http://0.0.0.0:3000/render")
-
-RENDER_TIMEOUT = RENDER.get("TIMEOUT", 5.0)
-
-RENDER_TEMPLATE_NAME = RENDER.get("TEMPLATE_NAME", None)
-
-RENDER_HEADERS = RENDER.get("HEADERS", {"Content-Type": "application/json"})
-
-
+URL = SETTINGS.get("URL", "http://0.0.0.0:3000/render")
+TIMEOUT = SETTINGS.get("TIMEOUT", 5.0)
+TEMPLATE_NAME = SETTINGS.get("TEMPLATE_NAME", None)
+HEADERS = SETTINGS.get("HEADERS", {"Content-Type": "application/json"})
