@@ -5,8 +5,8 @@ from setup_utils import read, read_section
 
 PACKAGE_NAME = "react-ssr"
 SOURCE_DIR_NAME = "react_ssr"
-HOMEPAGE_URL = "https://www.alexseitsinger.com/packages/python/{}".format(PACKAGE_NAME)
 GITHUB_URL = "https://github.com/alexseitsinger/{}-backend".format(PACKAGE_NAME)
+HOMEPAGE_URL = GITHUB_URL
 README_NAME = "README.md"
 
 setup(
