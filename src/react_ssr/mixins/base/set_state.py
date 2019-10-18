@@ -2,6 +2,10 @@ import re
 
 
 class SetStateMixin(object):
+    """
+    Updates the (nested) state with the data provided.
+    """
+
     def set_state(self, state, path, value, base_name=None):
         if base_name is not None:
             prefix = "{}.".format(base_name)

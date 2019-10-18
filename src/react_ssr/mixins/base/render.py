@@ -9,6 +9,10 @@ from ..settings.render import TEMPLATE_NAME, URL, TIMEOUT, HEADERS
 
 
 class RenderMixin(object):
+    """
+    Base process for rendering react server-side bundle through Django, then returning
+    it for client to render.
+    """
 
     render_template_name = TEMPLATE_NAME
     render_url = URL

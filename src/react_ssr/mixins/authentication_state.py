@@ -11,6 +11,9 @@ from ..settings.authentication_state import (
 
 
 class AuthenticationStateMixin(SetStateMixin, DefaultStateMixin):
+    """
+    Includes the "authentication" reducer state in the server-side bundle state.
+    """
 
     authentication_state_name = NAME
     authentication_state_user_serializer_class = None

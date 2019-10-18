@@ -2,6 +2,9 @@ from ..settings.secret_key import HEADER_NAME, VALUE
 
 
 class SecretKeyMixin(object):
+    """
+    Passes a secret key to the front-end server to authenticate render request.
+    """
 
     secret_key_header_name = HEADER_NAME
     secret_key_value = VALUE

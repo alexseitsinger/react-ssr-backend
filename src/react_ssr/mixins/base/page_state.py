@@ -1,4 +1,8 @@
 class PageStateMixin(object):
+    """
+    Adds a dictionary for the pages state.
+    """
+
     page_name = None
     page_state_path = None
 

@@ -2,6 +2,9 @@ from ..settings.user_agent import HEADER_NAME
 
 
 class UserAgentMixin(object):
+    """
+    Passes the requesting client's user-agent string to server-side bundle server.
+    """
 
     user_agent_header_name = HEADER_NAME
 

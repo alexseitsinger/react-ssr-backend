@@ -4,7 +4,7 @@ from .set_state import SetStateMixin
 
 class IncludedStatesMixin(SetStateMixin, DefaultStateMixin):
     """
-    Mixin for automatically including extra default states to each store's initial state.
+    Automatically include extra default states to each store's initial state.
     """
 
     included_states = None

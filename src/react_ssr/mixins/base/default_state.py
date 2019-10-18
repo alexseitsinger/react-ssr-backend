@@ -5,6 +5,9 @@ from ..settings.default_state import TIMEOUT, URL, HEADERS
 
 
 class DefaultStateMixin(object):
+    """
+    Gets the default state for the reducer over HTTP(S) and returns it as a dictionary.
+    """
 
     default_state_timeout = TIMEOUT
     default_state_url = URL
