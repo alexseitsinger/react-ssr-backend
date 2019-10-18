@@ -26,32 +26,34 @@ class AuthenticationStateMixin(SetStateMixin, DefaultStateMixin):
                 )
         return self.authentication_state_user_serializer_class
 
-    def get_authentication_state_user(self, request):
+    def get_authentication_state_user(self, request, *args, **kwargs):
         serializer_class = self.get_authentication_state_user_serializer_class()
         if serializer_class is not None:
             try:
-                return serializer_class(request.user).data
+                return serializer_class(request.user, *args, **kwargs).data
             except AssertionError:
                 context = {"request": request}
-                return serializer_class(request.user, context=context).data
+                return serializer_class(
+                    request.user, context=context, *args, **kwargs
+                ).data
 
     def get_authentication_state_tokens(self, request):
         raise NotImplementedError(
             "get_authentication_state_tokens() is not implemented."
         )
 
-    def set_authentication_state_user(self, request, state):
+    def set_authentication_state_user(self, request, state, *args, **kwargs):
         name = self.authentication_state_name
         path = self.authentication_state_user_state_path
         if path is not None:
-            value = self.get_authentication_state_user(request)
+            value = self.get_authentication_state_user(request, *args, **kwargs)
             self.set_state(state, path, value, name)
 
-    def set_authentication_state_tokens(self, request, state):
+    def set_authentication_state_tokens(self, request, state, *args, **kwargs):
         name = self.authentication_state_name
         path = self.authentication_state_tokens_state_path
         if path is not None:
-            value = self.get_authentication_state_tokens(request)
+            value = self.get_authentication_state_tokens(request, *args, **kwargs)
             self.set_state(state, path, value, name)
 
     def load_authentication_state_for_authenticated_user(self, request, state):
