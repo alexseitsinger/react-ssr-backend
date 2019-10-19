@@ -1,8 +1,4 @@
-from .default_state import DefaultStateMixin
-from .set_state import SetStateMixin
-
-
-class IncludedStatesMixin(SetStateMixin, DefaultStateMixin):
+class IncludedStatesMixin(object):
     """
     Automatically include extra default states to each store's initial state.
     """

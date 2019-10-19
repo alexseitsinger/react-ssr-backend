@@ -1,7 +1,7 @@
 import requests
 
-from ..exceptions import GetDefaultStateError
-from ..settings.default_state import TIMEOUT, URL, HEADERS
+from ...exceptions import GetDefaultStateError
+from ...settings.default_state import TIMEOUT, URL, HEADERS
 
 
 class DefaultStateMixin(object):

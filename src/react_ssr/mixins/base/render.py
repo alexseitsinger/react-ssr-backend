@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from ..exceptions import RenderFrontendError, GetContextError
-from ..settings.render import TEMPLATE_NAME, URL, TIMEOUT, HEADERS
+from ...exceptions import RenderFrontendError, GetContextError
+from ...settings.render import TEMPLATE_NAME, URL, TIMEOUT, HEADERS
 
 
 class RenderMixin(object):

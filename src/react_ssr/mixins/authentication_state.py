@@ -1,7 +1,5 @@
 from django.utils.module_loading import import_string
 
-from .set_state import SetStateMixin
-from .default_state import DefaultStateMixin
 from ..settings.authentication_state import (
     NAME,
     USER_STATE_PATH,
@@ -10,7 +8,7 @@ from ..settings.authentication_state import (
 )
 
 
-class AuthenticationStateMixin(SetStateMixin, DefaultStateMixin):
+class AuthenticationStateMixin(object):
     """
     Includes the "authentication" reducer state in the server-side bundle state.
     """
