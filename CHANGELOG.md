@@ -1,3 +1,15 @@
+<a name="v4.0.0"></a>
+## [v4.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v3.1.0...v4.0.0) (2019-10-19)
+
+### Code Refactoring
+- Changes default view class. ([0ce012a](https://github.com/alexseitsinger/react-ssr-backend/commit/0ce012a17e6a170944cae80e53bbd1735b1cddea))
+- Moves base mixins to subdir. ([f3d1885](https://github.com/alexseitsinger/react-ssr-backend/commit/f3d1885674cc29b55cf1737ed72e37e97bb30864))
+- Moves mixins. ([ef5a9da](https://github.com/alexseitsinger/react-ssr-backend/commit/ef5a9da2a7ac8d92e63f8fb32e01c7b88a1efee9))
+
+### Features
+- Adds *args **kwargs. ([7f4700a](https://github.com/alexseitsinger/react-ssr-backend/commit/7f4700ab5926530d3c317d313395f7cdba60b829))
+
+
 <a name="v3.1.0"></a>
 ## [v3.1.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v3.0.0...v3.1.0) (2019-09-18)
 
