@@ -1,3 +1,10 @@
+<a name="v4.0.1"></a>
+## [v4.0.1](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.0.0...v4.0.1) (2019-11-02)
+
+### Bug Fixes
+- Adds missing module. ([b13c192](https://github.com/alexseitsinger/react-ssr-backend/commit/b13c19294e73a48ed175cd31be6e990724853e99))
+
+
 <a name="v4.0.0"></a>
 ## [v4.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v3.1.0...v4.0.0) (2019-10-19)
 
