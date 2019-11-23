@@ -1,3 +1,10 @@
+<a name="v4.1.1"></a>
+## [v4.1.1](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.1.0...v4.1.1) (2019-11-23)
+
+### Bug Fixes
+- Fixes sanitizer method. ([fa87041](https://github.com/alexseitsinger/react-ssr-backend/commit/fa87041f4f7504d4c22a4a98d2fc927190dc96e2))
+
+
 <a name="v4.1.0"></a>
 ## [v4.1.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.0.1...v4.1.0) (2019-11-23)
 
