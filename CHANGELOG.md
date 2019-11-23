@@ -1,3 +1,10 @@
+<a name="v4.1.0"></a>
+## [v4.1.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.0.1...v4.1.0) (2019-11-23)
+
+### Features
+- Adds method for sanitizing. ([0ae45f0](https://github.com/alexseitsinger/react-ssr-backend/commit/0ae45f0da16c31dbf417ecc74ae53175460c00fa))
+
+
 <a name="v4.0.1"></a>
 ## [v4.0.1](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.0.0...v4.0.1) (2019-11-02)
 
