@@ -99,7 +99,11 @@ class RenderMixin(object):
         rendered_backend = self.render_backend(request, context)
         return rendered_backend
 
+    def sanitize_rendered(markup):
+        return markup
+
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         rendered = self.render(request, *args, **kwargs)
-        return rendered
+        sanitized = self.sanitize_rendered(rendered)
+        return sanitized
