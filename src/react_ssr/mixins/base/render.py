@@ -42,6 +42,7 @@ class RenderMixin(object):
             raise GetContextError(
                 "The response is missing 'html'.\n\n{}".format(response)
             )
+        html = self.sanitize_html(html)
 
         # If the response doesn't contain a "state" key, raise an exception.
         state = response.get("state", None)
@@ -99,11 +100,10 @@ class RenderMixin(object):
         rendered_backend = self.render_backend(request, context)
         return rendered_backend
 
-    def sanitize_rendered(markup):
-        return markup
+    def sanitize_html(self, html):
+        return html
 
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         rendered = self.render(request, *args, **kwargs)
-        sanitized = self.sanitize_rendered(rendered)
-        return sanitized
+        return rendered
