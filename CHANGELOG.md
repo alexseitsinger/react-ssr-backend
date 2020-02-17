@@ -1,3 +1,10 @@
+<a name="v5.0.0"></a>
+## [v5.0.0](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.1.1...v5.0.0) (2020-02-17)
+
+### Code Refactoring
+- Refactors codebase and moves modules. ([3f51ac7](https://github.com/alexseitsinger/react-ssr-backend/commit/3f51ac7dfcf4ef3cb0fa16396c280b966bcea725))
+
+
 <a name="v4.1.1"></a>
 ## [v4.1.1](https://github.com/alexseitsinger/react-ssr-backend/compare/v4.1.0...v4.1.1) (2019-11-23)
 
