@@ -19,14 +19,14 @@ pip install react-ssr
 {% load static %}
 
 {% block head %}
-		<script>window.__STATE__ == {{ state | safe }};</script>
+    <script>window.__STATE__ == {{ state | safe }};</script>
 {% endblock %}
 
 {% block body %}
-		<main role="main">{{ html | safe }}</main>
-		{% render_bundle "runtime" %}
-		{% render_bundle "vendors" %}
-		{% render_bundle "client" %}
+    <main role="main">{{ html | safe }}</main>
+    {% render_bundle "runtime" %}
+    {% render_bundle "vendors" %}
+    {% render_bundle "client" %}
 {% endblock %}
 ```
 
@@ -36,7 +36,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-		url(r"^$" views.HomePageView.as_view(), name="home-page"),
+    url(r"^$" views.HomePageView.as_view(), name="home-page"),
 ]
 ```
 
@@ -45,9 +45,9 @@ urlpatterns = [
 from react_ssr.views import ReactView
 
 class ReactViewBase(ReactView):
-		included_context = ["title", "meta"]
+    included_context = ["title", "meta"]
 
 class HomePageView(ReactViewBase):
-		page_path = "site/pages/home"
-		page_state_path = "site.pages.home"
+    page_path = "site/pages/home"
+    page_state_path = "site.pages.home"
 ```
