@@ -2,7 +2,7 @@ class RenderFrontendError(Exception):
     pass
 
 
-class GetContextError(Exception):
+class GetRenderContextError(Exception):
     pass
 
 
